@@ -1,0 +1,64 @@
+variable "resource_group_name" {
+  description = "Name of the resource group"
+  type        = string
+}
+
+variable "location" {
+  description = "Azure region for the resources"
+  type        = string
+}
+
+variable "vnet_name" {
+  description = "Name of the virtual network"
+  type        = string
+}
+
+variable "vnet_address_space" {
+  description = "Address space for the virtual network"
+  type        = list(string)
+}
+
+variable "subnets" {
+  description = "Map of subnet names to their configuration"
+  type        = map(object({
+    address_prefixes = list(string)
+  }))
+}
+
+variable "subnet_delegation_config" {
+  description = "Map of subnet names to their delegation configuration"
+  type        = map(object({
+    delegation_config_name    = string
+    delegation_config_actions = list(string)
+  }))
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  nullable    = false
+}
+
+variable "network_security_groups" {
+  description = "Map of network security group names to their configuration"
+  type        = map(object({
+    name                = string
+    location            = string
+    resource_group_name = string
+  }))
+}
+
+variable "network_security_rules" {
+  description = "Map of network security rule names to their configuration"
+  type        = map(object({
+    priority                    = number
+    direction                   = string
+    access                      = string
+    protocol                    = string
+    source_port_range           = string
+    destination_port_range      = string
+    source_address_prefix       = string
+    destination_address_prefix  = string
+    nsg_name                    = string
+  }))
+}
