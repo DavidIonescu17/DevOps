@@ -52,3 +52,36 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   network_security_group_name = azurerm_network_security_group.nsg[each.value.nsg_name].name
   resource_group_name         = var.resource_group_name
 }
+
+
+resource "azurerm_network_security_group_association" "nsg_association" {
+  for_each = var.subnets
+
+  subnet_id                 = azurerm_subnet.subnet[each.key].id
+  network_security_group_id = azurerm_network_security_group.nsg[each.value.nsg_name].id
+}
+
+
+resource "azurerm_virtual_network_peering" "spoke_to_hub" {
+  count = var.enable_peering ? 1 : 0
+
+  name                      = var.spoke_to_hub_name
+  resource_group_name       = var.resource_group_name
+  virtual_network_name      = azurerm_virtual_network.this.name
+  remote_virtual_network_id = data.azurerm_virtual_network.hub[0].id
+
+  allow_forwarded_traffic      = var.allow_forwarded_traffic
+  allow_virtual_network_access = var.allow_virtual_network_access
+}
+
+resource "azurerm_virtual_network_peering" "hub_to_spoke" {
+  count = var.enable_peering ? 1 : 0
+
+  name                      = var.hub_to_spoke_name
+  resource_group_name       = var.hub_resource_group_name
+  virtual_network_name      = var.hub_vnet_name
+  remote_virtual_network_id = azurerm_virtual_network.this.id
+
+  allow_forwarded_traffic      = var.allow_forwarded_traffic
+  allow_virtual_network_access = var.allow_virtual_network_access
+}
