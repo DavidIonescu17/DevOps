@@ -34,9 +34,7 @@ This platform covers the full DevOps stack:
 - ✅ Role Assignment module
 - ✅ Storage Account module
 - ✅ Virtual Machine module 
-
-
-
 - 🔄 Helm chart + templates
-- 🔄 GitHub Actions workflows
--  + Ansible provisioning
+- 🔄 Terraform workflows
+- 🔄 CI/CD workflows
+- 🔄 Ansible provisioning (playbook + script to call it)
