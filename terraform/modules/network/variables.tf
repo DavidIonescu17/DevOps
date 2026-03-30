@@ -20,14 +20,14 @@ variable "vnet_address_space" {
 
 variable "subnets" {
   description = "Map of subnet names to their configuration"
-  type        = map(object({
+  type = map(object({
     address_prefixes = list(string)
   }))
 }
 
 variable "subnet_delegation_config" {
   description = "Map of subnet names to their delegation configuration"
-  type        = map(object({
+  type = map(object({
     delegation_config_name    = string
     delegation_config_actions = list(string)
   }))
@@ -41,7 +41,7 @@ variable "tags" {
 
 variable "network_security_groups" {
   description = "Map of network security group names to their configuration"
-  type        = map(object({
+  type = map(object({
     name                = string
     location            = string
     resource_group_name = string
@@ -50,16 +50,16 @@ variable "network_security_groups" {
 
 variable "network_security_rules" {
   description = "Map of network security rule names to their configuration"
-  type        = map(object({
-    priority                    = number
-    direction                   = string
-    access                      = string
-    protocol                    = string
-    source_port_range           = string
-    destination_port_range      = string
-    source_address_prefix       = string
-    destination_address_prefix  = string
-    nsg_name                    = string
+  type = map(object({
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+    nsg_name                   = string
   }))
 }
 

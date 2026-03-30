@@ -75,7 +75,7 @@ variable "source_image" {
     sku       = string
     version   = string
   })
-} 
+}
 
 variable "identity_type" {
   description = "Type of identity for the virtual machine (e.g., SystemAssigned, UserAssigned, None)"

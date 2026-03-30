@@ -10,16 +10,16 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  for_each = var.subnets
+  for_each             = var.subnets
   name                 = each.key
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = each.value.address_prefixes  
+  address_prefixes     = each.value.address_prefixes
 
   delegation {
     name = each.value.delegation_config_name
     service_delegation {
-      name = each.value.delegation_config_name
+      name    = each.value.delegation_config_name
       actions = each.value.delegation_config_actions
     }
   }
