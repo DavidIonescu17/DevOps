@@ -62,3 +62,39 @@ variable "network_security_rules" {
     nsg_name                    = string
   }))
 }
+
+variable "spoke_to_hub_name" {
+  type        = string
+  description = "Name of the peering from spoke to hub"
+}
+
+variable "hub_to_spoke_name" {
+  type        = string
+  description = "Name of the peering from hub to spoke"
+}
+
+variable "enable_peering" {
+  type        = bool
+  description = "Custom variable used to determine whether to configure peering or not"
+}
+
+variable "hub_vnet_name" {
+  type        = string
+  description = "Name of the hub VNet"
+  default     = null
+}
+
+variable "hub_resource_group_name" {
+  type        = string
+  description = "Name of the RG that has the hub VNet"
+}
+
+variable "allow_forwarded_traffic" {
+  type        = bool
+  description = "Allow forwarded traffic setting on the peering"
+}
+
+variable "allow_virtual_network_access" {
+  type        = bool
+  description = "Allow virtual network access setting on the peering"
+}
