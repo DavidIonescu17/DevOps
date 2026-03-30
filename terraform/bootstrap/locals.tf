@@ -17,7 +17,7 @@ locals {
 
   base_name            = format("%s-%s", local.project_name, local.environment)
   resource_group_name  = format("%s-rg", local.base_name)
-  storage_account_name = format("%sstatestorage", local.base_name)
+  storage_account_name = format("%s%sstatestorage", local.project_name, local.environment)
 }
 
 locals {
