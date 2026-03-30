@@ -19,10 +19,24 @@ This platform covers the full DevOps stack:
 - kubectl + Helm
 
 ## Status
-- ✅ Networking module
-- 🔄 AKS module
+
 - 🔄 ACR module
-- 🔄 Key Vault module
-- 🔄 Jumphost + Ansible provisioning
-- 🔄 Helm chart
+- 🔄 AKS module
+- 🔄 Bastion module
+- ✅ Key Vault module
+- 🔄 Key Vault Secret module
+- 🔄 Managed Identity module
+- ✅ Network module
+- 🔄 PostgreSQL module
+- ✅ Private DNS zone module
+- 🔄 Private Endpoint module
+- 🔄 Random Password module
+- ✅ Role Assignment module
+- ✅ Storage Account module
+- ✅ Virtual Machine module 
+
+
+
+- 🔄 Helm chart + templates
 - 🔄 GitHub Actions workflows
+-  + Ansible provisioning
