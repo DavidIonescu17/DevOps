@@ -20,12 +20,12 @@ This platform covers the full DevOps stack:
 
 ## Status
 
-- 🔄 ACR module
+- ✅ ACR module
 - 🔄 AKS module
 - 🔄 Bastion module
 - ✅ Key Vault module
-- 🔄 Key Vault Secret module
-- 🔄 Managed Identity module
+- ✅ Key Vault Secret module
+- ✅ Managed Identity module
 - ✅ Network module
 - 🔄 PostgreSQL module
 - ✅ Private DNS zone module
@@ -39,7 +39,7 @@ This platform covers the full DevOps stack:
 - 🔄 CI/CD workflows
 - 🔄 Ansible provisioning (playbook + script to call it)
 - 🔄 Environment configurations 
-- 🔄 Bootstrap configuration
+- ✅ Bootstrap configuration
 - 🔄 Sample app to deploy
 - 🔄 Dockerfiles
 - 🔄 .gitignore
