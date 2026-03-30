@@ -38,3 +38,8 @@ This platform covers the full DevOps stack:
 - 🔄 Terraform workflows
 - 🔄 CI/CD workflows
 - 🔄 Ansible provisioning (playbook + script to call it)
+- 🔄 Environment configurations 
+- 🔄 Bootstrap configuration
+- 🔄 Sample app to deploy
+- 🔄 Dockerfiles
+- 🔄 .gitignore
