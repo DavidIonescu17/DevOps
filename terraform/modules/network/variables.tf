@@ -39,8 +39,6 @@ variable "network_security_groups" {
   description = "Map of network security group names to their configuration"
   type = map(object({
     name                = string
-    location            = string
-    resource_group_name = string
   }))
 }
 
