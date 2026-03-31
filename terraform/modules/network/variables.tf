@@ -22,14 +22,10 @@ variable "subnets" {
   description = "Map of subnet names to their configuration"
   type = map(object({
     address_prefixes = list(string)
-  }))
-}
-
-variable "subnet_delegation_config" {
-  description = "Map of subnet names to their delegation configuration"
-  type = map(object({
-    delegation_config_name    = string
-    delegation_config_actions = list(string)
+    subnet_delegation_config = optional(object({
+      delegation_config_name    = string
+      delegation_config_actions = list(string)
+    }))
   }))
 }
 
