@@ -5,7 +5,7 @@ variable "key_vault_id" {
 }
 
 variable "secret_name" {
-  type = set(string)
+  type        = set(string)
   description = "Name of the secret"
 }
 
