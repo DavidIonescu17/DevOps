@@ -35,14 +35,12 @@ locals {
       name           = "snet-pe"
       address_prefix = [cidrsubnet(local.vnet_address_space[0], 8, 1)] # 10.0.1.0/24
       delegation     = false
-      nsg_key        = "shared"
     }
 
     snet-jumphost = {
       name           = "snet-vm"
       address_prefix = [cidrsubnet(local.vnet_address_space[0], 8, 2)] # 10.0.2.0/24
       delegation     = false
-      nsg_key        = "shared"
     }
   }
 
@@ -57,7 +55,6 @@ locals {
       destination_port_range     = "22"
       source_address_prefix      = "*"
       destination_address_prefix = "*"
-      nsg_key                    = "shared"
     }
   }
 
