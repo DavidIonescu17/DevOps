@@ -1,0 +1,11 @@
+terraform
+*.tfstate
+*.tfstate.backup# Windows shortcuts
+*.lnk
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
