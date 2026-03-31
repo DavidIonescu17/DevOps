@@ -45,6 +45,7 @@ variable "network_security_groups" {
 variable "network_security_rules" {
   description = "Map of network security rule names to their configuration"
   type = map(object({
+    name                       = string
     priority                   = number
     direction                  = string
     access                     = string
@@ -53,7 +54,6 @@ variable "network_security_rules" {
     destination_port_range     = string
     source_address_prefix      = string
     destination_address_prefix = string
-    nsg_name                   = string
   }))
 }
 
