@@ -37,7 +37,7 @@ locals {
       delegation     = false
     }
 
-    snet-jumphost = {
+    snet-vm = {
       name           = "snet-vm"
       address_prefix = [cidrsubnet(local.vnet_address_space[0], 8, 2)] # 10.0.2.0/24
       delegation     = false
