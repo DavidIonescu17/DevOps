@@ -1,6 +1,6 @@
 locals {
   project_name = "devops"
-  location     = "westeurope"
+  location     = "polandcentral"
   environment  = "shared"
 
   common_tags = {

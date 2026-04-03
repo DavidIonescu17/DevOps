@@ -1,6 +1,8 @@
 .terraform
 *.tfstate
-*.tfstate.backup# Windows shortcuts
+*.tfstate.backup
+
+# Windows shortcuts
 *.lnk
 
 # Windows Installer files

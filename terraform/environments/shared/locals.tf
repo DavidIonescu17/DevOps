@@ -1,6 +1,6 @@
 locals {
   project_name = "devops"
-  location     = "westeurope"
+  location     = "polandcentral"
   environment  = "shared"
 
   common_tags = {
@@ -24,10 +24,10 @@ locals {
   # Network Configuration
   vnet_address_space = ["10.0.0.0/16"]
   network_security_groups = {
-    shared = {
+    nsg-shared = {
       name = "nsg-shared"
     }
-  }
+}
 
   # Calculate subnets 
   subnets = {
@@ -55,6 +55,7 @@ locals {
       destination_port_range     = "22"
       source_address_prefix      = "*"
       destination_address_prefix = "*"
+      nsg_key                    = "nsg-shared"
     }
   }
 

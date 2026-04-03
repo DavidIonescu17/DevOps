@@ -9,23 +9,33 @@ resource "azurerm_virtual_network" "vnet" {
   })
 }
 
-resource "azurerm_subnet" "subnet" {
-  for_each             = var.subnets
+resource "azurerm_subnet" "subnets" {
+  for_each = { for k, v in var.subnets : k => v if !v.delegation }
+
+  name                 = each.key
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = each.value.address_prefixes
+}
+
+resource "azurerm_subnet" "subnets_with_delegation" {
+  for_each             = { for k, v in var.subnets : k => v if v.delegation }
+  
   name                 = each.key
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = each.value.address_prefixes
 
   delegation {
-    name = each.value.delegation_config_name
+    name = each.value.delegation_config.name
     service_delegation {
-      name    = each.value.delegation_config_name
-      actions = each.value.delegation_config_actions
+      name    = each.value.delegation_config.service_delegation
+      actions = each.value.delegation_config.actions
     }
   }
 }
 
-resource "azurerm_network_security_group" "nsg" {
+resource "azurerm_network_security_group" "this" {
   for_each = var.network_security_groups
 
   name                = each.key
@@ -37,10 +47,10 @@ resource "azurerm_network_security_group" "nsg" {
   })
 }
 
-resource "azurerm_network_security_rule" "nsg_rule" {
+resource "azurerm_network_security_rule" "this" {
   for_each = var.network_security_rules
 
-  name                        = each.key
+  name                        = each.key  
   priority                    = each.value.priority
   direction                   = each.value.direction
   access                      = each.value.access
@@ -49,17 +59,27 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   destination_port_range      = each.value.destination_port_range
   source_address_prefix       = each.value.source_address_prefix
   destination_address_prefix  = each.value.destination_address_prefix
-  network_security_group_name = azurerm_network_security_group.nsg[each.value.name].name
+  network_security_group_name = azurerm_network_security_group.this[each.value.nsg_key].name
   resource_group_name         = var.resource_group_name
 }
 
 
-resource "azurerm_network_security_group_association" "nsg_association" {
-  for_each = var.subnets
+# NSG Association
+resource "azurerm_subnet_network_security_group_association" "nsg_associations" {
+  for_each = { for k, v in var.subnets : k => v if !v.delegation && v.nsg_key != null }
 
-  subnet_id                 = azurerm_subnet.subnet[each.key].id
-  network_security_group_id = azurerm_network_security_group.nsg[each.value.name].id
+  subnet_id                 = azurerm_subnet.subnets[each.key].id
+  network_security_group_id = azurerm_network_security_group.this[each.value.nsg_key].id
 }
+
+# Delegated NSG Association
+resource "azurerm_subnet_network_security_group_association" "nsg_associations_delegated" {
+  for_each = { for k, v in var.subnets : k => v if v.delegation && v.nsg_key != null }
+
+  subnet_id                 = azurerm_subnet.subnets_with_delegation[each.key].id
+  network_security_group_id = azurerm_network_security_group.this[each.value.nsg_key].id
+}
+
 
 
 resource "azurerm_virtual_network_peering" "spoke_to_hub" {

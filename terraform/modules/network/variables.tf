@@ -22,9 +22,12 @@ variable "subnets" {
   description = "Map of subnet names to their configuration"
   type = map(object({
     address_prefixes = list(string)
-    subnet_delegation_config = optional(object({
-      delegation_config_name    = string
-      delegation_config_actions = list(string)
+    delegation     = bool
+    nsg_key        = optional(string)
+    delegation_config = optional(object({
+      name               = string
+      service_delegation = string
+      actions            = list(string)
     }))
   }))
 }
@@ -54,6 +57,7 @@ variable "network_security_rules" {
     destination_port_range     = string
     source_address_prefix      = string
     destination_address_prefix = string
+    nsg_key                    = string
   }))
 }
 
