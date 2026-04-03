@@ -54,7 +54,7 @@ resource "azurerm_network_security_rule" "nsg_rule" {
 }
 
 
-resource "azurerm_network_security_group_association" "nsg_association" {
+resource "azurerm_subnet_network_security_group_association" "nsg_association" {
   for_each = var.subnets
 
   subnet_id                 = azurerm_subnet.subnet[each.key].id
