@@ -49,7 +49,7 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   destination_port_range      = each.value.destination_port_range
   source_address_prefix       = each.value.source_address_prefix
   destination_address_prefix  = each.value.destination_address_prefix
-  network_security_group_name = azurerm_network_security_group.nsg[each.value.nsg_name].name
+  network_security_group_name = azurerm_network_security_group.nsg[each.value.name].name
   resource_group_name         = var.resource_group_name
 }
 
@@ -58,7 +58,7 @@ resource "azurerm_network_security_group_association" "nsg_association" {
   for_each = var.subnets
 
   subnet_id                 = azurerm_subnet.subnet[each.key].id
-  network_security_group_id = azurerm_network_security_group.nsg[each.value.nsg_name].id
+  network_security_group_id = azurerm_network_security_group.nsg[each.value.name].id
 }
 
 
