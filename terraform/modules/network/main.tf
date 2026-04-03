@@ -67,7 +67,7 @@ resource "azurerm_virtual_network_peering" "spoke_to_hub" {
 
   name                      = var.spoke_to_hub_name
   resource_group_name       = var.resource_group_name
-  virtual_network_name      = azurerm_virtual_network.this.name
+  virtual_network_name      = azurerm_virtual_network.vnet.name
   remote_virtual_network_id = data.azurerm_virtual_network.hub[0].id
 
   allow_forwarded_traffic      = var.allow_forwarded_traffic
@@ -80,7 +80,7 @@ resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   name                      = var.hub_to_spoke_name
   resource_group_name       = var.hub_resource_group_name
   virtual_network_name      = var.hub_vnet_name
-  remote_virtual_network_id = azurerm_virtual_network.this.id
+  remote_virtual_network_id = azurerm_virtual_network.vnet.id
 
   allow_forwarded_traffic      = var.allow_forwarded_traffic
   allow_virtual_network_access = var.allow_virtual_network_access
