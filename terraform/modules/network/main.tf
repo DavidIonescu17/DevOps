@@ -18,6 +18,23 @@ resource "azurerm_subnet" "subnets" {
   address_prefixes     = each.value.address_prefixes
 }
 
+resource "azurerm_subnet" "subnets_with_delegation" {
+  for_each             = { for k, v in var.subnets : k => v if v.delegation }
+  
+  name                 = each.key
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = each.value.address_prefixes
+
+  delegation {
+    name = each.value.delegation_config.name
+    service_delegation {
+      name    = each.value.delegation_config.service_delegation
+      actions = each.value.delegation_config.actions
+    }
+  }
+}
+
 
 resource "azurerm_network_security_group" "nsg" {
   for_each = var.network_security_groups

@@ -6,6 +6,14 @@ output "subnet_ids" {
 }
 
 output "vnet_id" {
-  value       = azurerm_virtual_network.vnet.id
+  value       = azurerm_virtual_network.this.id
   description = "ID of the Virtual Network"
+}
+
+
+output "delegated_subnet_ids" {
+  description = "Map of subnet IDs (delegated"
+  value = {
+    for k, v in azurerm_subnet.subnets_with_delegation : k => v.id
+  }
 }
