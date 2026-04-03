@@ -9,21 +9,15 @@ resource "azurerm_virtual_network" "vnet" {
   })
 }
 
-resource "azurerm_subnet" "subnet" {
-  for_each             = var.subnets
+resource "azurerm_subnet" "subnets" {
+  for_each = { for k, v in var.subnets : k => v if !v.delegation }
+
   name                 = each.key
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = each.value.address_prefixes
-
-  delegation {
-    name = each.value.delegation_config_name
-    service_delegation {
-      name    = each.value.delegation_config_name
-      actions = each.value.delegation_config_actions
-    }
-  }
 }
+
 
 resource "azurerm_network_security_group" "nsg" {
   for_each = var.network_security_groups

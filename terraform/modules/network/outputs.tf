@@ -1,7 +1,7 @@
 output "subnet_ids" {
   description = "Map of subnet IDs (non-delegated)"
   value = {
-    for k, v in azurerm_subnet.subnet : k => v.id
+    for k, v in azurerm_subnet.subnets : k => v.id
   }
 }
 
