@@ -15,9 +15,9 @@ locals {
   # Resource names will follow the pattern: <project>-<environment>-<resource_type>
   # Example: devops-shared-vnet, devops-shared-nsg, etc.
 
-  base_name            = format("%s-%s", local.project_name, local.environment)
-  resource_group_name  = format("%s-rg", local.base_name)
-  vnet_name            = format("hub-vnet-%s", local.base_name)
+  base_name           = format("%s-%s", local.project_name, local.environment)
+  resource_group_name = format("%s-rg", local.base_name)
+  vnet_name           = format("hub-vnet-%s", local.base_name)
 }
 
 locals {
@@ -32,15 +32,15 @@ locals {
   # Calculate subnets 
   subnets = {
     snet-pe = {
-      name           = "snet-pe"
-      address_prefix = [cidrsubnet(local.vnet_address_space[0], 8, 1)] # 10.0.1.0/24
-      delegation     = false
+      name             = "snet-pe"
+      address_prefixes = [cidrsubnet(local.vnet_address_space[0], 8, 1)] # 10.0.1.0/24
+      delegation       = false
     }
 
     snet-vm = {
-      name           = "snet-vm"
-      address_prefix = [cidrsubnet(local.vnet_address_space[0], 8, 2)] # 10.0.2.0/24
-      delegation     = false
+      name             = "snet-vm"
+      address_prefixes = [cidrsubnet(local.vnet_address_space[0], 8, 2)] # 10.0.2.0/24
+      delegation       = false
     }
   }
 
