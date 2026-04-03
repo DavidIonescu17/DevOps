@@ -47,7 +47,7 @@ locals {
   network_security_rules = {
     allowSSH = {
       name                       = "AllowSSH"
-      priority                   = "110"
+      priority                   = 110
       direction                  = "Inbound"
       access                     = "Allow"
       protocol                   = "Tcp"
