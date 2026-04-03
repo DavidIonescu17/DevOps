@@ -49,7 +49,7 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   destination_port_range      = each.value.destination_port_range
   source_address_prefix       = each.value.source_address_prefix
   destination_address_prefix  = each.value.destination_address_prefix
-  network_security_group_name = azurerm_network_security_group.nsg[each.value.nsg_name].name
+  network_security_group_name = azurerm_network_security_group.nsg[each.value.name].name
   resource_group_name         = var.resource_group_name
 }
 
@@ -58,7 +58,7 @@ resource "azurerm_network_security_group_association" "nsg_association" {
   for_each = var.subnets
 
   subnet_id                 = azurerm_subnet.subnet[each.key].id
-  network_security_group_id = azurerm_network_security_group.nsg[each.value.nsg_name].id
+  network_security_group_id = azurerm_network_security_group.nsg[each.value.name].id
 }
 
 
@@ -67,7 +67,7 @@ resource "azurerm_virtual_network_peering" "spoke_to_hub" {
 
   name                      = var.spoke_to_hub_name
   resource_group_name       = var.resource_group_name
-  virtual_network_name      = azurerm_virtual_network.this.name
+  virtual_network_name      = azurerm_virtual_network.vnet.name
   remote_virtual_network_id = data.azurerm_virtual_network.hub[0].id
 
   allow_forwarded_traffic      = var.allow_forwarded_traffic
@@ -80,7 +80,7 @@ resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   name                      = var.hub_to_spoke_name
   resource_group_name       = var.hub_resource_group_name
   virtual_network_name      = var.hub_vnet_name
-  remote_virtual_network_id = azurerm_virtual_network.this.id
+  remote_virtual_network_id = azurerm_virtual_network.vnet.id
 
   allow_forwarded_traffic      = var.allow_forwarded_traffic
   allow_virtual_network_access = var.allow_virtual_network_access

@@ -1,12 +1,12 @@
 module "networking" {
-  source                       = "../../modules/network"
-  resource_group_name          = local.resource_group_name
-  location                     = local.location
-  vnet_name                    = local.vnet_name
-  vnet_address_space           = local.vnet_address_space
-  subnets                      = local.subnets
-  network_security_rules       = local.network_security_rules
-  network_security_groups      = local.network_security_groups
+  source                  = "../../modules/network"
+  resource_group_name     = local.resource_group_name
+  location                = local.location
+  vnet_name               = local.vnet_name
+  vnet_address_space      = local.vnet_address_space
+  subnets                 = local.subnets
+  network_security_rules  = local.network_security_rules
+  network_security_groups = local.network_security_groups
 
   # Peering settings (disabled on shared)
   enable_peering               = local.enable_peering
