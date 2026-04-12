@@ -2,12 +2,42 @@
 *.tfstate
 *.tfstate.backup
 
-# Windows shortcuts
-*.lnk
+# Sensitive or Secret Files
+*.pem
+*.key
+*.crt
+*.pfx
+*.env
+.env.*
 
-# Windows Installer files
+# Windows
+*.lnk
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
+
+# Editor / OS Files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.vscode
+.idea
+*.vs
+*.sln
+*.suo
+*.user
+*.cache
+*.project
+*.classpath
+*.settings/
+*.metadata/
+*.vscode/
+*.history/
+*.idea/
+*.vs/
