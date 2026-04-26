@@ -4,7 +4,7 @@ resource "azurerm_container_registry" "this" {
 
   name                          = var.name
   sku                           = "Premium"
-  public_network_access_enabled = "true"
+  public_network_access_enabled = "false"
 
   tags = merge(var.tags, {
     Module = "azure_container_registry"
