@@ -49,7 +49,7 @@ variable "default_action" {
 
 variable "bypass_services" {
   type        = list(string)
-  description = "List of services to bypass for network ACLs (e.g., AzureServices)"
+  description = "List of services to bypass the network settings (e.g., AzureServices)"
 }
 
 variable "allowed_ips" {
