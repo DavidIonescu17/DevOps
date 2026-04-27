@@ -19,3 +19,17 @@ module "networking" {
 
   tags = local.common_tags
 }
+
+module "key_vault" {
+  source              = "../../modules/key_vault"
+  resource_group_name = local.resource_group_name
+  location            = local.location
+  name                = local.key_vault_name
+  sku_name            = local.key_vault_sku_name
+
+  default_action  = local.key_vault_default_action
+  bypass_services = local.key_vault_bypass_services
+  allowed_ips     = local.key_vault_allowed_ips
+
+  tags = local.common_tags
+}

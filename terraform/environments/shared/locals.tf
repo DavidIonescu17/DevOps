@@ -27,7 +27,7 @@ locals {
     nsg-shared = {
       name = "nsg-shared"
     }
-}
+  }
 
   # Calculate subnets 
   subnets = {
