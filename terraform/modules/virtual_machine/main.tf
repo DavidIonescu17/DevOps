@@ -1,8 +1,8 @@
 resource "azurerm_public_ip" "vm_public_ip" {
   name                = var.pip_name
   location            = var.location
-  resource_group_name = var.rg_name
-  allocation_method   = var.allocation_method
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static" # in order to ensure the IP address doesn't change when the VM is restarted
 
   tags = merge(var.tags,
     {
@@ -14,12 +14,12 @@ resource "azurerm_public_ip" "vm_public_ip" {
 resource "azurerm_network_interface" "vm_nic" {
   name                = var.nic_name
   location            = var.location
-  resource_group_name = var.rg_name
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = var.ip_config_name
     subnet_id                     = var.subnet_id
-    private_ip_address_allocation = var.private_ip_allocation
+    private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.vm_public_ip.id
   }
 
@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "vm_nic" {
 
 resource "azurerm_linux_virtual_machine" "vm" {
   name                  = var.vm_name
-  resource_group_name   = var.rg_name
+  resource_group_name   = var.resource_group_name
   location              = var.location
   size                  = var.size
   admin_username        = var.admin_username
