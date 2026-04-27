@@ -18,30 +18,6 @@ variable "sku_name" {
   description = "SKU name for the Key Vault (e.g., standard, premium)"
 }
 
-variable "soft_delete_retention_days" {
-
-  type        = number
-  description = "Number of days to retain deleted Key Vaults (default is 90)"
-  default     = 90
-}
-
-variable "purge_protection_enabled" {
-  type        = bool
-  description = "Whether purge protection is enabled for the Key Vault (default is false)"
-  default     = false
-}
-
-variable "enabled_for_disk_encryption" {
-  type        = bool
-  description = "Whether the Key Vault is enabled for disk encryption (default is false)"
-  default     = false
-}
-
-variable "rbac_authorization_enabled" {
-  type        = bool
-  description = "Whether RBAC authorization is enabled for the Key Vault"
-}
-
 variable "default_action" {
   type        = string
   description = "Default action for network ACLs (Allow or Deny)"
