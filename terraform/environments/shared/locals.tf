@@ -18,6 +18,7 @@ locals {
   base_name           = format("%s-%s", local.project_name, local.environment)
   resource_group_name = format("%s-rg", local.base_name)
   vnet_name           = format("hub-vnet-%s", local.base_name)
+  key_vault_name      = format("kv-%s", local.base_name)
 }
 
 locals {
@@ -65,4 +66,16 @@ locals {
   allow_virtual_network_access = null
   hub_to_spoke_name            = null
   spoke_to_hub_name            = null
+}
+
+locals {
+  # Key Vault Configuration
+  key_vault_sku_name        = "standard"
+  key_vault_default_action  = "Allow"
+  key_vault_bypass_services = ["AzureServices"]
+  key_vault_allowed_ips     = []
+}
+
+locals {
+  
 }
