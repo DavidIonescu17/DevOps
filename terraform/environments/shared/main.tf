@@ -33,3 +33,18 @@ module "key_vault" {
 
   tags = local.common_tags
 }
+
+module "virtual_machine" {
+  source              = "../../modules/virtual_machine"
+  resource_group_name = local.resource_group_name
+  location            = local.location
+  vm_name             = local.vm_name
+  nic_name            = local.vm_nic_name
+  pip_name            = local.vm_pip_name
+  ip_config_name      = "ipconfig1"
+  subnet_id           = module.networking.subnets["snet-vm"].id
+  size                = "Standard_DS1_v2"
+  admin_username      = "azureuser"
+
+  tags = local.common_tags
+}
