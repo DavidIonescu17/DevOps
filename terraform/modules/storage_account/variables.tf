@@ -1,4 +1,4 @@
-variable "rg_name" {
+variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
 }
@@ -30,11 +30,6 @@ variable "allowed_ips" {
 
 variable "container_name" {
   description = "Name of the storage container"
-  type        = string
-}
-
-variable "container_access_type" {
-  description = "The access type of the storage container (private, blob, or container)"
   type        = string
 }
 
