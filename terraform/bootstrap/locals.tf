@@ -23,7 +23,8 @@ locals {
 locals {
   # Storage Account for Terraform State configuration
   container_name           = "terraform"
-  container_access_type    = "private"
   account_tier             = "Standard"
+  allowed_ips              = ["${chomp(data.http.my_public_ip.response_body)}"] # Allow access only from the current machine's public IP
+
   account_replication_type = "LRS"
 }
