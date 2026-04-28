@@ -60,7 +60,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type = var.identity_type
   }
 
   tags = merge(var.tags, {

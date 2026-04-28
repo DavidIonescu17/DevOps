@@ -40,18 +40,21 @@ module "virtual_machine" {
   resource_group_name = local.resource_group_name
   location            = local.location
   vm_name             = local.vm_name
-  nic_name            = local.vm_nic_name
-  pip_name            = local.vm_pip_name
-  ip_config_name      = local.vm_ip_config_name
-  subnet_id           = module.networking.subnets["snet-vm"].id
-  size                = local.vm_size
-  admin_username      = local.vm_admin_username
+
+  create_public_ip = local.create_public_ip
+  nic_name         = local.vm_nic_name
+  pip_name         = local.vm_pip_name
+  ip_config_name   = local.vm_ip_config_name
+  subnet_id        = module.networking.subnets["snet-vm"].id
+  size             = local.vm_size
+  admin_username   = local.vm_admin_username
+  identity_type    = local.identity_type
 
   os_disk = {
     caching              = local.vm_os_disk_caching
     storage_account_type = local.vm_os_disk_storage_account_type
   }
-  
+
   source_image = {
     publisher = local.vm_source_image_publisher
     offer     = local.vm_source_image_offer

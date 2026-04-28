@@ -13,11 +13,6 @@ variable "pip_name" {
   type        = string
 }
 
-variable "allocation_method" {
-  description = "Allocation method for the public IP address (Static or Dynamic)"
-  type        = string
-}
-
 variable "create_public_ip" {
   description = "Whether to create a public IP address for the VM"
   type        = bool
@@ -41,11 +36,6 @@ variable "ip_config_name" {
 
 variable "subnet_id" {
   description = "ID of the subnet to which the network interface will be connected"
-  type        = string
-}
-
-variable "private_ip_allocation" {
-  description = "Allocation method for the private IP address (Static or Dynamic)"
   type        = string
 }
 
