@@ -73,9 +73,9 @@ locals {
   key_vault_sku_name        = "standard"
   key_vault_default_action  = "Allow"
   key_vault_bypass_services = ["AzureServices"]
-  key_vault_allowed_ips     = []
+  key_vault_allowed_ips = ["${chomp(data.http.my_public_ip.response_body)}"]
 }
 
 locals {
-  
+
 }
