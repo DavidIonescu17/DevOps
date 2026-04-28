@@ -5,6 +5,9 @@ resource "azurerm_storage_account" "this" {
   account_tier             = var.account_tier
   account_replication_type = var.account_replication_type
 
+  # Enhance security by enabling infrastructure encryption, which encrypts data at rest with a second layer of encryption
+  infrastructure_encryption_enabled = true
+
   tags = merge(var.tags,
     {
       module = "storage_account"
