@@ -1,4 +1,6 @@
 resource "azurerm_public_ip" "vm_public_ip" {
+  # Create a public IP address only if the VM is a jump host or it needs to be accessed directly from the internet
+  count = var.create_public_ip ? 1 : 0
   name                = var.pip_name
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -20,7 +22,9 @@ resource "azurerm_network_interface" "vm_nic" {
     name                          = var.ip_config_name
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.vm_public_ip.id
+
+    # Associate the public IP address with the NIC if it was created
+    public_ip_address_id          = var.create_public_ip ? azurerm_public_ip.vm_public_ip[0].id : null
   }
 
   tags = merge(var.tags,
@@ -56,7 +60,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   identity {
-    type = var.identity_type
+    type = "SystemAssigned"
   }
 
   provisioner "remote-exec" {
@@ -66,7 +70,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
       type        = "ssh"
       user        = var.admin_username
       private_key = tls_private_key.this.private_key_pem
-      host        = azurerm_public_ip.vm_public_ip.ip_address
+      host        = var.create_public_ip ? azurerm_public_ip.vm_public_ip[0].ip_address : null
     }
   }
 

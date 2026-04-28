@@ -18,6 +18,11 @@ variable "allocation_method" {
   type        = string
 }
 
+variable "create_public_ip" {
+  description = "Whether to create a public IP address for the VM"
+  type        = bool
+}
+
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)
