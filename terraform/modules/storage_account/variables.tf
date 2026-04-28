@@ -23,11 +23,6 @@ variable "account_replication_type" {
   type        = string
 }
 
-variable "allowed_subnet_ids" {
-  description = "List of virtual network subnet IDs that are allowed to access the storage account"
-  type        = list(string)
-}
-
 variable "allowed_ips" {
   description = "List of IP addresses or CIDR ranges allowed to access the storage account"
   type        = list(string)

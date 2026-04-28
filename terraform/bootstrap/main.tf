@@ -15,6 +15,7 @@ module "storage_account" {
   account_replication_type = local.account_replication_type
   container_name           = local.container_name
   container_access_type    = local.container_access_type
+  allowed_ips              = local.allowed_ips
 
   tags = local.common_tags
 }
