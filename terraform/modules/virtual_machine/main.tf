@@ -63,17 +63,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     type = "SystemAssigned"
   }
 
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready'"]
-
-    connection {
-      type        = "ssh"
-      user        = var.admin_username
-      private_key = tls_private_key.this.private_key_pem
-      host        = var.create_public_ip ? azurerm_public_ip.vm_public_ip[0].ip_address : null
-    }
-  }
-
   tags = merge(var.tags, {
     module = "virtual_machine"
     }
