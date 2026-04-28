@@ -36,30 +36,33 @@ module "key_vault" {
 }
 
 module "virtual_machine" {
+  for_each = local.virtual_machines
+
   source              = "../../modules/virtual_machine"
   resource_group_name = local.resource_group_name
   location            = local.location
-  vm_name             = local.vm_name
+  
+  vm_name             = each.value.vm_name
 
-  create_public_ip = local.create_public_ip
-  nic_name         = local.vm_nic_name
-  pip_name         = local.vm_pip_name
-  ip_config_name   = local.vm_ip_config_name
+  create_public_ip = each.value.create_public_ip
+  nic_name         = each.value.nic_name
+  pip_name         = each.value.pip_name
+  ip_config_name   = each.value.ip_config_name
   subnet_id        = module.networking.subnets["snet-vm"].id
-  size             = local.vm_size
-  admin_username   = local.vm_admin_username
-  identity_type    = local.identity_type
+  size             = each.value.size
+  admin_username   = each.value.admin_username
+  identity_type    = each.value.identity_type
 
   os_disk = {
-    caching              = local.vm_os_disk_caching
-    storage_account_type = local.vm_os_disk_storage_account_type
+    caching              = each.value.os_disk.caching
+    storage_account_type = each.value.os_disk.storage_account_type
   }
 
   source_image = {
-    publisher = local.vm_source_image_publisher
-    offer     = local.vm_source_image_offer
-    sku       = local.vm_source_image_sku
-    version   = local.vm_source_image_version
+    publisher = each.value.source_image.publisher
+    offer     = each.value.source_image.offer
+    sku       = each.value.source_image.sku
+    version   = each.value.source_image.version
   }
 
   tags = local.common_tags

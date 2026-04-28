@@ -77,5 +77,29 @@ locals {
 }
 
 locals {
+  # Virtual Machines Configuration
+  virtual_machines = {
+    jumphost = {
+      vm_name             = format("vm-jumphost-%s", local.base_name)
+      create_public_ip    = true  
+      nic_name            = format("nic-jumphost-%s", local.base_name)
+      pip_name            = format("pip-jumphost-%s", local.base_name)
+      ip_config_name      = format("ipconfig-jumphost-%s", local.base_name)
+      size                = "Standard_D2s_v4"
+      admin_username      = "azureuser"
+      identity_type       = "SystemAssigned"
 
+      os_disk             = {
+        caching              = "ReadWrite"
+        storage_account_type = "Standard_LRS"
+      }
+      
+      source_image        = {
+        publisher = "Canonical"
+        offer     = "ubuntu-25_04"
+        sku       = "server"
+        version   = "latest"
+      }
+    }
+  }
 }
