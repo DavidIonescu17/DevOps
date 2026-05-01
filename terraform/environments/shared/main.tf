@@ -41,17 +41,21 @@ module "virtual_machine" {
   source              = "../../modules/virtual_machine"
   resource_group_name = local.resource_group_name
   location            = local.location
-  
+
   vm_name             = each.value.vm_name
 
-  create_public_ip = each.value.create_public_ip
-  nic_name         = each.value.nic_name
-  pip_name         = each.value.pip_name
-  ip_config_name   = each.value.ip_config_name
-  subnet_id        = module.networking.subnets["snet-vm"].id
-  size             = each.value.size
-  admin_username   = each.value.admin_username
-  identity_type    = each.value.identity_type
+  create_public_ip    = each.value.create_public_ip
+  nic_name            = each.value.nic_name
+  pip_name            = each.value.pip_name
+  ip_config_name      = each.value.ip_config_name
+  subnet_id           = module.networking.subnet_ids["snet-vm"]
+  size                = each.value.size
+  admin_username      = each.value.admin_username
+  identity_type       = each.value.identity_type
+
+  # Cloud-init provisioning
+  cloud_init_enabled   = each.value.cloud_init_enabled
+  github_runner_config = each.value.github_runner_config
 
   os_disk = {
     caching              = each.value.os_disk.caching

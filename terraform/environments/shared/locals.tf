@@ -54,7 +54,7 @@ locals {
       protocol                   = "Tcp"
       source_port_range          = "*"
       destination_port_range     = "22"
-      source_address_prefix      = "*"
+      source_address_prefix      = "${chomp(data.http.my_public_ip.response_body)}"
       destination_address_prefix = "*"
       nsg_key                    = "nsg-shared"
     }
@@ -72,16 +72,25 @@ locals {
   # Key Vault Configuration
   key_vault_sku_name        = "standard"
   key_vault_default_action  = "Allow"
-  key_vault_bypass_services = ["AzureServices"]
+  key_vault_bypass_services = "AzureServices"
   key_vault_allowed_ips     = ["${chomp(data.http.my_public_ip.response_body)}"] # Allow access only from the current machine's public IP
 }
 
 locals {
+  # GitHub Actions Runner Configuration
+  # The runner token is stored in Key Vault and fetched by the VM using Managed Identity
+  github_runner = {
+    enabled   = true
+    repo_url  = "https://github.com/YOUR_ORG/YOUR_REPO"  # TODO: Replace with your GitHub repo URL
+    label     = format("jumphost-%s", local.environment)
+    key_vault_name = local.key_vault_name
+  }
+
   # Virtual Machines Configuration
   virtual_machines = {
     jumphost = {
       vm_name             = format("vm-jumphost-%s", local.base_name)
-      create_public_ip    = true  
+      create_public_ip    = true
       nic_name            = format("nic-jumphost-%s", local.base_name)
       pip_name            = format("pip-jumphost-%s", local.base_name)
       ip_config_name      = format("ipconfig-jumphost-%s", local.base_name)
@@ -89,11 +98,15 @@ locals {
       admin_username      = "azureuser"
       identity_type       = "SystemAssigned"
 
+      # Enable cloud-init for provisioning
+      cloud_init_enabled     = true
+      github_runner_config   = local.github_runner
+
       os_disk             = {
         caching              = "ReadWrite"
         storage_account_type = "Standard_LRS"
       }
-      
+
       source_image        = {
         publisher = "Canonical"
         offer     = "ubuntu-24_04"
