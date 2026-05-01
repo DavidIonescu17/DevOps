@@ -63,6 +63,17 @@ resource "azurerm_linux_virtual_machine" "vm" {
     type = var.identity_type
   }
 
+  # Cloud-init custom data for provisioning
+  custom_data = var.cloud_init_enabled && var.github_runner_config != null ? base64encode(
+    templatefile("${path.module}/cloud-init.yaml", {
+      admin_username   = var.admin_username
+      ssh_public_key   = tls_private_key.this.public_key_openssh
+      runner_label     = var.github_runner_config.label
+      github_repo_url  = var.github_runner_config.repo_url
+      key_vault_name   = var.github_runner_config.key_vault_name
+    })
+  ) : null
+
   tags = merge(var.tags, {
     module = "virtual_machine"
     }

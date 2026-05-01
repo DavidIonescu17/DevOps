@@ -77,3 +77,20 @@ variable "identity_type" {
   type        = string
 }
 
+variable "cloud_init_enabled" {
+  description = "Whether to enable cloud-init for VM provisioning"
+  type        = bool
+  default     = false
+}
+
+variable "github_runner_config" {
+  description = "GitHub Actions Runner configuration (repo URL, label, Key Vault name)"
+  type = object({
+    enabled        = bool
+    repo_url       = string
+    label          = string
+    key_vault_name = string
+  })
+  default = null
+}
+
