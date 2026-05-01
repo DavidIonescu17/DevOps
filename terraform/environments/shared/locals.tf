@@ -96,7 +96,7 @@ locals {
       
       source_image        = {
         publisher = "Canonical"
-        offer     = "ubuntu-25_04"
+        offer     = "ubuntu-24_04"
         sku       = "server"
         version   = "latest"
       }
