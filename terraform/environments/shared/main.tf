@@ -31,7 +31,6 @@ module "key_vault" {
   bypass_services = local.key_vault_bypass_services
   allowed_ips     = local.key_vault_allowed_ips
 
-
   tags = local.common_tags
 }
 
