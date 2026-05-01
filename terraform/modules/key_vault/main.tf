@@ -16,7 +16,7 @@ resource "azurerm_key_vault" "this" {
 
   network_acls {
     default_action = var.default_action
-    bypass         = [var.bypass_services]
+    bypass         = var.bypass_services
     ip_rules       = var.allowed_ips
   }
 
