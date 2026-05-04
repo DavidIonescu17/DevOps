@@ -71,7 +71,7 @@ write_files:
       RUNNER_USER="github-runner"
       RUNNER_HOME="/home/github-runner"
       
-      # Terraform will ignore $${} and output ${} for bash to use
+      # Terraform will ignore double $$ and render single $ in the final cloud-init script, allowing us to use variables in the script that are evaluated at runtime on the VM
       RUNNER_DIR="$${RUNNER_HOME}/actions-runner"
       
       # Terraform variables, keep single $
