@@ -95,7 +95,7 @@ locals {
       pip_name            = format("pip-jumphost-%s", local.base_name)
       ip_config_name      = format("ipconfig-jumphost-%s", local.base_name)
       size                = "Standard_D2s_v4"
-      admin_username      = "azureuser"
+      admin_username      = "adminuser"
       identity_type       = "SystemAssigned"
 
       # Enable cloud-init for provisioning
