@@ -87,7 +87,7 @@ locals {
   # Role Assignments Configuration
   role_assignments = {
     vm_mi_kv_user = {
-      principal_id   = module.virtual_machine["jumphost"].identity_principal_id
+      principal_id   = module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]
       role_definition_name = "Key Vault Secrets User"
       scope         = module.key_vault.key_vault_id
     }
