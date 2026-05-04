@@ -54,7 +54,7 @@ module "key_vault_secret" {
   source       = "../../modules/key_vault_secret"
   secret_name  = local.secret_name
   secret_value = local.secret_value
-  key_vault_id = module.key_vault.kv_id
+  key_vault_id = module.key_vault.key_vault_id
 
   tags = local.common_tags
 
