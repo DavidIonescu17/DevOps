@@ -83,6 +83,10 @@ write_files:
         sleep 5
       done
 
+      # Authenticate to Azure via the VM Managed Identity
+      echo "[$(date)] Logging into Azure via Managed Identity..."
+      az login --identity > /dev/null
+
       # Fetch runner token from Key Vault using Managed Identity
       echo "[$(date)] Fetching runner token from Key Vault..."
       RUNNER_TOKEN=$(az keyvault secret show \
