@@ -70,7 +70,11 @@ write_files:
       RUNNER_VERSION="2.323.0"
       RUNNER_USER="github-runner"
       RUNNER_HOME="/home/github-runner"
-      RUNNER_DIR="${RUNNER_HOME}/actions-runner"
+      
+      # Terraform will ignore $${} and output ${} for bash to use
+      RUNNER_DIR="$${RUNNER_HOME}/actions-runner"
+      
+      # Terraform variables, keep single $
       RUNNER_LABEL="${runner_label}"
       GITHUB_REPO_URL="${github_repo_url}"
       KEY_VAULT_NAME="${key_vault_name}"
@@ -85,17 +89,17 @@ write_files:
 
       # Authenticate to Azure via the VM Managed Identity
       echo "[$(date)] Logging into Azure via Managed Identity..."
-      az login --identity > /dev/null
+      az login --identity > /dev/null 2>&1
 
       # Fetch runner token from Key Vault using Managed Identity
       echo "[$(date)] Fetching runner token from Key Vault..."
       RUNNER_TOKEN=$(az keyvault secret show \
         --name "gh-runner-token" \
-        --vault-name "${KEY_VAULT_NAME}" \
+        --vault-name "$${KEY_VAULT_NAME}" \
         --query value \
         -o tsv 2>/dev/null || echo "")
 
-      if [ -z "${RUNNER_TOKEN}" ]; then
+      if [ -z "$${RUNNER_TOKEN}" ]; then
         echo "[$(date)] ERROR: Failed to fetch runner token from Key Vault"
         exit 1
       fi
@@ -103,33 +107,33 @@ write_files:
       echo "[$(date)] Token fetched successfully"
 
       # Create runner directory
-      mkdir -p "${RUNNER_DIR}"
-      chown "${RUNNER_USER}:${RUNNER_USER}" "${RUNNER_DIR}"
+      mkdir -p "$${RUNNER_DIR}"
+      chown "$${RUNNER_USER}:$${RUNNER_USER}" "$${RUNNER_DIR}"
 
       # Download runner if not already present
-      RUNNER_TARBALL="${RUNNER_HOME}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz"
-      if [ ! -f "${RUNNER_TARBALL}" ]; then
-        echo "[$(date)] Downloading GitHub Runner v${RUNNER_VERSION}..."
-        curl -sL -o "${RUNNER_TARBALL}" \
-          "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz"
-        chown "${RUNNER_USER}:${RUNNER_USER}" "${RUNNER_TARBALL}"
+      RUNNER_TARBALL="$${RUNNER_HOME}/actions-runner-linux-x64-$${RUNNER_VERSION}.tar.gz"
+      if [ ! -f "$${RUNNER_TARBALL}" ]; then
+        echo "[$(date)] Downloading GitHub Runner v$${RUNNER_VERSION}..."
+        curl -sL -o "$${RUNNER_TARBALL}" \
+          "https://github.com/actions/runner/releases/download/v$${RUNNER_VERSION}/actions-runner-linux-x64-$${RUNNER_VERSION}.tar.gz"
+        chown "$${RUNNER_USER}:$${RUNNER_USER}" "$${RUNNER_TARBALL}"
       fi
 
       # Extract runner if not already extracted
-      if [ ! -f "${RUNNER_DIR}/.runner" ]; then
+      if [ ! -f "$${RUNNER_DIR}/.runner" ]; then
         echo "[$(date)] Extracting runner..."
-        tar xzf "${RUNNER_TARBALL}" -C "${RUNNER_DIR}"
-        chown -R "${RUNNER_USER}:${RUNNER_USER}" "${RUNNER_DIR}"
+        tar xzf "$${RUNNER_TARBALL}" -C "$${RUNNER_DIR}"
+        chown -R "$${RUNNER_USER}:$${RUNNER_USER}" "$${RUNNER_DIR}"
       fi
 
       # Configure runner if not already configured
-      if [ ! -f "${RUNNER_DIR}/.runner" ]; then
+      if [ ! -f "$${RUNNER_DIR}/.runner" ]; then
         echo "[$(date)] Configuring runner..."
-        su - "${RUNNER_USER}" -c "cd ${RUNNER_DIR} && ./config.sh \
-          --url ${GITHUB_REPO_URL} \
-          --token ${RUNNER_TOKEN} \
-          --name ${RUNNER_LABEL} \
-          --labels ${RUNNER_LABEL} \
+        su - "$${RUNNER_USER}" -c "cd $${RUNNER_DIR} && ./config.sh \
+          --url $${GITHUB_REPO_URL} \
+          --token $${RUNNER_TOKEN} \
+          --name $${RUNNER_LABEL} \
+          --labels $${RUNNER_LABEL} \
           --unattended \
           --replace"
       else
@@ -149,7 +153,7 @@ write_files:
 
       echo "[$(date)] Starting tool installation..."
 
-      # Azure CLI (guard: check if az exists)
+      # Azure CLI
       if ! command -v az &> /dev/null; then
         echo "[$(date)] Installing Azure CLI..."
         curl -sL https://aka.ms/InstallAzureCLIDeb | bash
@@ -157,18 +161,19 @@ write_files:
         echo "[$(date)] Azure CLI already installed"
       fi
 
-      # Docker (check if docker exists)
+      # Docker
       if ! command -v docker &> /dev/null; then
         echo "[$(date)] Installing Docker..."
         curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
         sh /tmp/get-docker.sh
+        
+        # Terraform variable, keep single $
         usermod -aG docker ${admin_username}
-        usermod -aG docker github-runner
       else
         echo "[$(date)] Docker already installed"
       fi
 
-      # kubectl and kubelogin (guard: check if kubectl exists)
+      # kubectl
       if ! command -v kubectl &> /dev/null; then
         echo "[$(date)] Installing kubectl..."
         az aks install-cli
@@ -176,7 +181,7 @@ write_files:
         echo "[$(date)] kubectl already installed"
       fi
 
-      # Helm (check if helm exists)
+      # Helm
       if ! command -v helm &> /dev/null; then
         echo "[$(date)] Installing Helm..."
         curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -184,7 +189,7 @@ write_files:
         echo "[$(date)] Helm already installed"
       fi
 
-      # k9s (check if k9s exists)
+      # k9s
       if ! command -v k9s &> /dev/null; then
         echo "[$(date)] Installing k9s..."
         curl -sL https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz | tar xz -C /usr/local/bin k9s
@@ -192,11 +197,11 @@ write_files:
         echo "[$(date)] k9s already installed"
       fi
 
-      # Terraform (check if terraform exists)
+      # Terraform
       if ! command -v terraform &> /dev/null; then
-        echo "[$(date)] Installing Terraform v${TERRAFORM_VERSION}..."
+        echo "[$(date)] Installing Terraform v$${TERRAFORM_VERSION}..."
         wget -q -O /tmp/terraform.zip \
-          "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          "https://releases.hashicorp.com/terraform/$${TERRAFORM_VERSION}/terraform_$${TERRAFORM_VERSION}_linux_amd64.zip"
         unzip -o /tmp/terraform.zip -d /usr/local/bin/
         rm /tmp/terraform.zip
       else
@@ -207,18 +212,17 @@ write_files:
 
 # Run commands in order on first boot
 runcmd:
-
-  # Run tool installation script
+  # 1. Run tool installation script first
   - bash /opt/setup-tools.sh > /var/log/setup-tools.log 2>&1
 
-  # Enable Docker service
+  # 2. Enable and start Docker service
   - systemctl enable docker
   - systemctl start docker
-  
-  # Run runner configuration script
+
+  # 3. Run runner configuration script
   - bash /opt/configure-runner.sh > /var/log/configure-runner.log 2>&1
 
-  # Reload systemd and enable runner service
+  # 4. Reload systemd and enable runner service
   - systemctl daemon-reload
   - systemctl enable github-runner.service
   - systemctl start github-runner.service
