@@ -100,6 +100,14 @@ locals {
 }
 
 locals {
+  # SECRETS Module
+  secret_name = ["gh-runner-token"]
+  secret_value = {
+    "gh-runner-token" = var.gh_runner_token
+  }
+}
+
+locals {
   # GitHub Actions Runner Configuration
   # The runner token is stored in Key Vault and fetched by the VM using Managed Identity
   github_runner = {

@@ -50,6 +50,17 @@ module "role_assignment" {
   depends_on = [module.key_vault, module.managed_identity]
 }
 
+module "key_vault_secret" {
+  source       = "../../modules/key_vault_secret"
+  secret_name  = local.secret_name
+  secret_value = local.secret_value
+  key_vault_id = module.key_vault.kv_id
+
+  tags = local.common_tags
+
+  depends_on = [module.key_vault]
+}
+
 module "virtual_machine" {
   for_each = local.virtual_machines
 
@@ -86,5 +97,5 @@ module "virtual_machine" {
 
   tags = local.common_tags
 
-  depends_on = [ module.managed_identity, module.key_vault, module.networking, module.role_assignment ]
+  depends_on = [module.managed_identity, module.key_vault, module.networking, module.role_assignment]
 }
