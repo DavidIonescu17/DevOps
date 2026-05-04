@@ -78,6 +78,7 @@ module "virtual_machine" {
   size             = each.value.size
   admin_username   = each.value.admin_username
   identity_type    = each.value.identity_type
+  identity_ids     = each.value.identity_ids
 
   # Cloud-init provisioning
   cloud_init_enabled   = each.value.cloud_init_enabled
