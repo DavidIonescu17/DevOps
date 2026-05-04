@@ -47,7 +47,7 @@ module "role_assignment" {
   source      = "../../modules/role_assignment"
   role_config = local.role_assignments
 
-  depends_on = [module.key_vault]
+  depends_on = [module.key_vault, module.managed_identity]
 }
 
 module "virtual_machine" {
