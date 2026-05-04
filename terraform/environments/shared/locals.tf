@@ -128,7 +128,7 @@ locals {
       size             = "Standard_A1_v2"
       admin_username   = "adminuser"
       identity_type    = "UserAssigned"
-      identity_ids     = [module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]]
+      identity_ids     = [module.managed_identity.identity_ids["uami-jumphost-${local.base_name}"]]
 
       # Enable cloud-init for provisioning
       cloud_init_enabled   = true
@@ -141,8 +141,8 @@ locals {
 
       source_image = {
         publisher = "Canonical"
-        offer     = "ubuntu-24_04"
-        sku       = "server"
+        offer     = "0001-com-ubuntu-server-jammy"
+        sku       = "22_04-lts"
         version   = "latest"
       }
     }
