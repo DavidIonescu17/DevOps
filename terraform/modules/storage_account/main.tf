@@ -14,7 +14,7 @@ resource "azurerm_storage_account" "this" {
   # Restrict access to the storage account by allowing only trusted Microsoft services to bypass the network rules, and by specifying allowed virtual network subnets
   network_rules {
     default_action = "Deny"
-    bypass = "AzureServices"
+    bypass = ["AzureServices"]
     ip_rules                   = var.allowed_ips
   }
 
