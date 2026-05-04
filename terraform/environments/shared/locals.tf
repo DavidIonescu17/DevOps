@@ -18,7 +18,7 @@ locals {
   base_name           = format("%s-%s", local.project_name, local.environment)
   resource_group_name = format("%s-rg", local.base_name)
   vnet_name           = format("hub-vnet-%s", local.base_name)
-  key_vault_name      = format("kv-%s", local.base_name)
+  key_vault_name      = format("kv-%s-david", local.base_name)
 }
 
 locals {
@@ -125,7 +125,7 @@ locals {
       nic_name         = format("nic-jumphost-%s", local.base_name)
       pip_name         = format("pip-jumphost-%s", local.base_name)
       ip_config_name   = format("ipconfig-jumphost-%s", local.base_name)
-      size             = "Standard_D2s_v4"
+      size             = "Standard_A1_v2"
       admin_username   = "adminuser"
       identity_type    = "UserAssigned"
       identity_ids     = [module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]]
