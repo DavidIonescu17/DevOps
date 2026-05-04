@@ -78,7 +78,7 @@ locals {
 
 locals {
   # Managed Identity Configuration
-   managed_identities = toset([
+  managed_identities = toset([
     "uami-jumphost-${local.base_name}"
   ])
 }
@@ -87,14 +87,14 @@ locals {
   # Role Assignments Configuration
   role_assignments = {
     vm_mi_kv_user = {
-      principal_id   = module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]
+      principal_id         = module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]
       role_definition_name = "Key Vault Secrets User"
-      scope         = module.key_vault.key_vault_id
+      scope                = module.key_vault.key_vault_id
     }
     admin_kv_officer = {
-      principal_id   = data.azurerm_client_config.current.object_id
+      principal_id         = data.azurerm_client_config.current.object_id
       role_definition_name = "Key Vault Secrets Officer"
-      scope         = module.key_vault.key_vault_id
+      scope                = module.key_vault.key_vault_id
     }
   }
 }
@@ -111,35 +111,35 @@ locals {
   # GitHub Actions Runner Configuration
   # The runner token is stored in Key Vault and fetched by the VM using Managed Identity
   github_runner = {
-    enabled   = true
-    repo_url  = "https://github.com/DavidIonescu17/DevOps.git"
-    label     = format("jumphost-%s", local.environment)
+    enabled        = true
+    repo_url       = "https://github.com/DavidIonescu17/DevOps.git"
+    label          = format("jumphost-%s", local.environment)
     key_vault_name = local.key_vault_name
   }
 
   # Virtual Machines Configuration
   virtual_machines = {
     jumphost = {
-      vm_name             = format("vm-jumphost-%s", local.base_name)
-      create_public_ip    = true
-      nic_name            = format("nic-jumphost-%s", local.base_name)
-      pip_name            = format("pip-jumphost-%s", local.base_name)
-      ip_config_name      = format("ipconfig-jumphost-%s", local.base_name)
-      size                = "Standard_D2s_v4"
-      admin_username      = "adminuser"
-      identity_type       = "UserAssigned"
-      identity_ids        = [module.managed_identity.identity_ids["uami-jumphost-${local.base_name}"]]
+      vm_name          = format("vm-jumphost-%s", local.base_name)
+      create_public_ip = true
+      nic_name         = format("nic-jumphost-%s", local.base_name)
+      pip_name         = format("pip-jumphost-%s", local.base_name)
+      ip_config_name   = format("ipconfig-jumphost-%s", local.base_name)
+      size             = "Standard_D2s_v4"
+      admin_username   = "adminuser"
+      identity_type    = "UserAssigned"
+      identity_ids     = [module.managed_identity.principal_ids["uami-jumphost-${local.base_name}"]]
 
       # Enable cloud-init for provisioning
-      cloud_init_enabled     = true
-      github_runner_config   = local.github_runner
+      cloud_init_enabled   = true
+      github_runner_config = local.github_runner
 
-      os_disk             = {
+      os_disk = {
         caching              = "ReadWrite"
         storage_account_type = "Standard_LRS"
       }
 
-      source_image        = {
+      source_image = {
         publisher = "Canonical"
         offer     = "ubuntu-24_04"
         sku       = "server"

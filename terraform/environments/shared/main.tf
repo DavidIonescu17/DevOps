@@ -58,7 +58,7 @@ module "key_vault_secret" {
 
   tags = local.common_tags
 
-  depends_on = [module.key_vault]
+  depends_on = [module.key_vault, module.role_assignment]
 }
 
 module "virtual_machine" {
