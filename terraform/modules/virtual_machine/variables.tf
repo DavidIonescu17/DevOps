@@ -77,6 +77,12 @@ variable "identity_type" {
   type        = string
 }
 
+variable "identity_ids" {
+  description = "List of user-assigned identity IDs to associate with the VM (only applicable if identity_type is UserAssigned)"
+  type        = list(string)
+  default     = null
+}
+
 variable "cloud_init_enabled" {
   description = "Whether to enable cloud-init for VM provisioning"
   type        = bool

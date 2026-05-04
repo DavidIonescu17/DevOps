@@ -61,6 +61,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   identity {
     type = var.identity_type
+    identity_ids = var.identity_type == "UserAssigned" ? var.identity_ids : null
   }
 
   # Cloud-init custom data for provisioning
