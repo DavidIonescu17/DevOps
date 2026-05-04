@@ -9,3 +9,10 @@ variable "subscription_id" {
   type        = string
   nullable    = false
 }
+
+variable "gh_runner_token" {
+  description = "The github runner token to allow the VM to register as a self-hosted runner in GitHub Actions"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
