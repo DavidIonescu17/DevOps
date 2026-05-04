@@ -77,11 +77,23 @@ locals {
 }
 
 locals {
+  # Managed Identity Configuration
+   managed_identities = toset([
+    "uami-jumphost-${local.base_name}"
+  ])
+}
+
+locals {
   # Role Assignments Configuration
   role_assignments = {
     vm_mi_kv_user = {
       principal_id   = module.virtual_machine["jumphost"].identity_principal_id
       role_definition_name = "Key Vault Secrets User"
+      scope         = module.key_vault.key_vault_id
+    }
+    admin_kv_officer = {
+      principal_id   = data.azurerm_client_config.current.object_id
+      role_definition_name = "Key Vault Secrets Officer"
       scope         = module.key_vault.key_vault_id
     }
   }
@@ -107,7 +119,8 @@ locals {
       ip_config_name      = format("ipconfig-jumphost-%s", local.base_name)
       size                = "Standard_D2s_v4"
       admin_username      = "adminuser"
-      identity_type       = "SystemAssigned"
+      identity_type       = "UserAssigned"
+      identity_ids        = [module.managed_identity.identity_ids["uami-jumphost-${local.base_name}"]]
 
       # Enable cloud-init for provisioning
       cloud_init_enabled     = true

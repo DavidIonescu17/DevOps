@@ -34,6 +34,15 @@ module "key_vault" {
   tags = local.common_tags
 }
 
+module "managed_identity" {
+  source              = "../../modules/managed_identity"
+  resource_group_name = local.resource_group_name
+  location            = local.location
+  name                = local.managed_identities
+
+  tags = local.common_tags
+}
+
 module "role_assignment" {
   source      = "../../modules/role_assignment"
   role_config = local.role_assignments
@@ -76,4 +85,6 @@ module "virtual_machine" {
   }
 
   tags = local.common_tags
+
+  depends_on = [ module.managed_identity, module.key_vault, module.networking, module.role_assignment ]
 }
