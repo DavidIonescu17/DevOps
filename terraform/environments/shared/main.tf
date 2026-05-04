@@ -34,6 +34,13 @@ module "key_vault" {
   tags = local.common_tags
 }
 
+module "role_assignment" {
+  source      = "../../modules/role_assignment"
+  role_config = local.role_assignments
+
+  depends_on = [module.key_vault]
+}
+
 module "virtual_machine" {
   for_each = local.virtual_machines
 

@@ -77,6 +77,17 @@ locals {
 }
 
 locals {
+  # Role Assignments Configuration
+  role_assignments = {
+    vm_mi_kv_user = {
+      principal_id   = module.virtual_machine["jumphost"].identity_principal_id
+      role_definition_name = "Key Vault Secrets User"
+      scope         = module.key_vault.key_vault_id
+    }
+  }
+}
+
+locals {
   # GitHub Actions Runner Configuration
   # The runner token is stored in Key Vault and fetched by the VM using Managed Identity
   github_runner = {
