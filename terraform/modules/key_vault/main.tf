@@ -20,11 +20,11 @@ resource "azurerm_key_vault" "this" {
     ip_rules       = var.allowed_ips
   }
 
-  lifecycle {
-    # Prevent Terraform from accidentally destroying the vault
-    # if a name change or something else triggers a replacement
-    prevent_destroy = true
-  }
+  # lifecycle {
+  #   # Prevent Terraform from accidentally destroying the vault
+  #   # if a name change or something else triggers a replacement
+  #   prevent_destroy = true
+  # }
 
   tags = merge(var.tags,
     {
