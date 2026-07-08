@@ -148,3 +148,14 @@ locals {
     }
   }
 }
+
+locals {
+  # AKS Configuration
+  aks_cluster_name      = format("aks-%s", local.base_name)
+  aks_dns_prefix        = format("aks%s", replace(local.base_name, "-", ""))
+  aks_node_count        = 1
+  aks_node_vm_size      = "Standard_D2_v2"
+  aks_enable_auto_scaling = false
+  aks_min_node_count    = 1
+  aks_max_node_count    = 3
+}

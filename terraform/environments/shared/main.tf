@@ -100,3 +100,18 @@ module "virtual_machine" {
 
   depends_on = [module.managed_identity, module.key_vault, module.networking, module.role_assignment]
 }
+
+module "aks" {
+  source                  = "../../modules/aks"
+  resource_group_name     = local.resource_group_name
+  location                = local.location
+  name                    = local.aks_cluster_name
+  dns_prefix              = local.aks_dns_prefix
+  node_count              = local.aks_node_count
+  node_vm_size            = local.aks_node_vm_size
+  enable_auto_scaling     = local.aks_enable_auto_scaling
+  min_node_count          = local.aks_min_node_count
+  max_node_count          = local.aks_max_node_count
+
+  tags = local.common_tags
+}
