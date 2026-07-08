@@ -20,7 +20,7 @@ This platform covers the full DevOps stack:
 ## Status
 
 - ✅ ACR module
-- 🔄 AKS module
+- ✅ AKS module
 - 🔄 Bastion module
 - ✅ Key Vault module
 - ✅ Key Vault Secret module
